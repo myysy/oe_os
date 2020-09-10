@@ -5,3 +5,4 @@
 *.hrb
 !bmp.obj
 *.img
+*.org

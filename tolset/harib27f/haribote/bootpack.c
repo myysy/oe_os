@@ -69,6 +69,13 @@ void HariMain(void)
 	Buddy_new(buddy);
 	Buddy_alloc(buddy, 0x400);
 
+
+	struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
+	memtotal = memtest(0x00500000, 0xbfffffff);
+	memman_init(memman);
+	memman_free(memman, 0x00001000, 0x0009e000); /* 0x00001000 - 0x0009efff */
+	memman_free(memman, 0x00500000, memtotal - 0x00500000);
+
 	init_palette();
 	shtctl = shtctl_init(buddy, binfo->vram, binfo->scrnx, binfo->scrny);
 	task_a = task_init(buddy);

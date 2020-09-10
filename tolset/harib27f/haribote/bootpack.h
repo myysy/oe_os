@@ -154,6 +154,7 @@ int Buddy_total(struct Buddy *self);
 /* memory.c */
 #define MEMMAN_FREES		4090	/* �����Ŗ�32KB */
 #define BUDDY_ADDR 			0x003c0000
+#define MEMMAN_ADDR			0X003d0000
 struct FREEINFO {	/* �������� */
 	unsigned int addr, size;
 };
