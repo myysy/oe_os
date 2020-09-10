@@ -1,0 +1,35 @@
+race_condition_solution 
+    内核态竞争条件
+    内核态竞争条件解决方案
+
+BBP_with_sem
+    内核态生产者消费者同步场景
+
+address_convertion
+    xp
+        内存地址转换
+    trc
+        0
+            用户态启动内核态竞争条件演示
+        1
+            用户态启动内核态竞争条件解决方案演示
+        2
+            用户态启动内核态生产者消费者演示
+        3
+            用于实验，没啥用
+philospher
+    trc
+        4
+            哲学家吃饭
+
+buddy_system
+    haribote
+        buddy.c
+            伙伴系统的实现，用于内核态的内存管理
+        memory.c
+            首次适应/最佳适应/最坏适应算法，用于用户态的内存管理
+        console.c
+            添加了 cmd_alloc4k 和 cmd_free
+            
+
+还有些说明之后通过邮件补

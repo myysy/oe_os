@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b5bf0b17-60d9-4ef9-b8ea-84c5a2901e7b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../harib24f/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/apilib.h" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/apilib.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/apilib.lib" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/apilib.lib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/bootpack.bim" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/bootpack.bim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/bootpack.c" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/bootpack.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/bootpack.h" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/bootpack.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/bootpack.hrb" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/bootpack.hrb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/bootpack.lst" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/bootpack.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/bootpack.map" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/bootpack.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/bootpack.obj" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/bootpack.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/OS_race_condition.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/OS_race_condition.dir/build.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/DependInfo.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/build.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/cmake_clean.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/objects1.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/objects1.rsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/dumb.dir/progress.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/cmake-build-debug/OS_race_condition.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/cmake-build-debug/OS_race_condition.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/console.c" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/console.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/console.lst" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/console.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/console.obj" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/console.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/haribote.img" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/haribote.img" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/haribote.sys" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/haribote.sys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/sync_utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/sync_utils.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/sync_utils.lst" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/sync_utils.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib24f/sync_utils.obj" beforeDir="false" afterPath="$PROJECT_DIR$/../harib24f/sync_utils.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../harib26/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../harib26/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apilib.h" beforeDir="false" afterPath="$PROJECT_DIR$/apilib.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apilib/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/apilib/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apilib/apilib.lib" beforeDir="false" afterPath="$PROJECT_DIR$/apilib/apilib.lib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_make.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app_make.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chklang/chklang.bim" beforeDir="false" afterPath="$PROJECT_DIR$/chklang/chklang.bim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chklang/chklang.c" beforeDir="false" afterPath="$PROJECT_DIR$/chklang/chklang.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chklang/chklang.hrb" beforeDir="false" afterPath="$PROJECT_DIR$/chklang/chklang.hrb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chklang/chklang.lst" beforeDir="false" afterPath="$PROJECT_DIR$/chklang/chklang.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chklang/chklang.map" beforeDir="false" afterPath="$PROJECT_DIR$/chklang/chklang.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chklang/chklang.obj" beforeDir="false" afterPath="$PROJECT_DIR$/chklang/chklang.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote.img" beforeDir="false" afterPath="$PROJECT_DIR$/haribote.img" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/bootpack.bim" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/bootpack.bim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/bootpack.c" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/bootpack.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/bootpack.h" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/bootpack.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/bootpack.hrb" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/bootpack.hrb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/bootpack.lst" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/bootpack.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/bootpack.map" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/bootpack.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/bootpack.obj" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/bootpack.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/console.c" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/console.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/console.lst" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/console.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/console.obj" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/console.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/graphic.c" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/graphic.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/graphic.lst" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/graphic.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/graphic.obj" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/graphic.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haribote/haribote.sys" beforeDir="false" afterPath="$PROJECT_DIR$/haribote/haribote.sys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../z_tools/qemu/fdimage0.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../z_tools/qemu/fdimage0.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../computer organization/hardwired/altera/91/quartus/CPU.qws" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../computer organization/hardwired/altera/91/quartus/CPU.qws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../computer organization/hardwired/altera/91/quartus/db/CPU.eco.cdb" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../computer organization/hardwired/altera/91/quartus/db/CPU.eco.cdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../computer organization/hardwired/altera/91/quartus/db/CPU.sld_design_entry.sci" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../computer organization/hardwired/altera/91/quartus/db/CPU.sld_design_entry.sci" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../computer organization/hardwired/altera/91/quartus/db/CPU.tmw_info" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../computer organization/hardwired/altera/91/quartus/db/CPU.tmw_info" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/haribote/console.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="348">
+              <caret line="673" column="42" selection-start-line="673" selection-start-column="42" selection-end-line="673" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/trc/trc.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="21" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/haribote/sync_utils.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="680">
+              <caret line="40" column="28" lean-forward="true" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/haribote/bootpack.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="257">
+              <caret line="394" column="12" selection-start-line="394" selection-start-column="4" selection-end-line="394" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/haribote/bootpack.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="581">
+              <caret line="309" column="23" selection-start-line="309" selection-start-column="23" selection-end-line="309" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/haribote/window.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1258">
+              <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>fnt</find>
+      <find>langmode</find>
+      <find>putfonts</find>
+      <find>langbyte1</find>
+      <find>cons_put</find>
+      <find>putfon</find>
+      <find>la</find>
+      <find>shtctl</find>
+      <find>memman_total</find>
+      <find>langb</find>
+      <find>memtotal</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/haribote/graphic.c" />
+        <option value="$PROJECT_DIR$/haribote/bootpack.h" />
+        <option value="$PROJECT_DIR$/trc/trc.c" />
+        <option value="$PROJECT_DIR$/haribote/bootpack.c" />
+        <option value="$PROJECT_DIR$/haribote/console.c" />
+        <option value="$PROJECT_DIR$/haribote/sync_utils.c" />
+      </list>
+    </option>
+  </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/harib27f.iml" />
+        <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/.idea/encodings.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1490" />
+    <option name="width" value="1522" />
+    <option name="height" value="1952" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="OS_race_condition" type="b2602c69:ProjectViewProjectNode" />
+              <item name="harib27f" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b5bf0b17-60d9-4ef9-b8ea-84c5a2901e7b" name="Default Changelist" comment="" />
+      <created>1558428905302</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1558428905302</updated>
+      <workItem from="1558428911648" duration="8463000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="8463000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-6" y="-6" width="1513" height="983" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.24948454" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="CMake" weight="0.3298122" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="make" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haribote/graphic.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="496">
+          <caret line="401" column="70" lean-forward="true" selection-start-line="401" selection-start-column="70" selection-end-line="401" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trc/trc.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="21" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haribote/bootpack.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="394" column="12" selection-start-line="394" selection-start-column="4" selection-end-line="394" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haribote/window.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1258">
+          <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haribote/bootpack.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="581">
+          <caret line="309" column="23" selection-start-line="309" selection-start-column="23" selection-end-line="309" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haribote/sync_utils.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="40" column="28" lean-forward="true" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/haribote/console.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="673" column="42" selection-start-line="673" selection-start-column="42" selection-end-line="673" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
