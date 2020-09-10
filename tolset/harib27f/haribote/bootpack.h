@@ -1,10 +1,10 @@
 /* asmhead.nas */
 struct BOOTINFO { /* 0x0ff0-0x0fff */
-	char cyls; /* �u�[�g�Z�N�^�͂ǂ��܂Ńf�B�X�N���ǂ񂾂̂� */
-	char leds; /* �u�[�g���̃L�[�{�[�h��LED�̏��� */
-	char vmode; /* �r�f�I���[�h  ���r�b�g�J���[�� */
+	char cyls; /* 启动区读磁盘读到此为止 */
+	char leds; /* 启动时键盘的LED的状态 */
+	char vmode; /* 显卡模式为多少位彩色 */
 	char reserve;
-	short scrnx, scrny; /* ���ʉ𑜓x */
+	short scrnx, scrny; /* 画面分辨率 */
 	char *vram;
 };
 #define ADR_BOOTINFO	0x00000ff0
@@ -131,31 +131,10 @@ void inthandler2c(int *esp);
 void enable_mouse(struct FIFO32 *fifo, int data0, struct MOUSE_DEC *mdec);
 int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 
-/* buddy.c */
-#define ls(x) ((x) << 1 | 1)
-#define rs(x) (((x) + 1) << 1)
-#define fa(x) (((x) + 1) / 2 - 1)
-#define maxint(x, y) ((x) > (y) ? (x) : (y))
-#define MAX_SIZE 64
-struct Buddy {
-    unsigned int size;
-    unsigned int longest[0x4000];
-};
-int check(int x);
-unsigned int fixsize(unsigned int size);
-void Buddy_new(struct Buddy *self);
-int Buddy_alloc(struct Buddy *self, int size);
-void Buddy_free(struct Buddy *self, int offset);
-void Buddy_dump(struct Buddy *self);
-int Buddy_alloc_4k(struct Buddy *self, int size);
-int Buddy_size(struct Buddy *self, int offset);
-int Buddy_total(struct Buddy *self);
-
 /* memory.c */
-#define MEMMAN_FREES		4090	/* �����Ŗ�32KB */
-#define BUDDY_ADDR 			0x003c0000
-#define MEMMAN_ADDR			0X003d0000
-struct FREEINFO {	/* �������� */
+#define MEMMAN_FREES		4090	/* ����Ŗ�32KB */
+#define MEMMAN_ADDR			0x003c0000
+struct FREEINFO {	/* ������� */
 	unsigned int addr, size;
 };
 struct MEMMAN {		/* �������Ǘ� */
@@ -167,6 +146,8 @@ void memman_init(struct MEMMAN *man);
 unsigned int memman_total(struct MEMMAN *man);
 unsigned int memman_alloc(struct MEMMAN *man, unsigned int size);
 int memman_free(struct MEMMAN *man, unsigned int addr, unsigned int size);
+unsigned int memman_alloc_4k(struct MEMMAN *man, unsigned int size);
+int memman_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size);
 
 /* sheet.c */
 #define MAX_SHEETS		256
@@ -182,7 +163,7 @@ struct SHTCTL {
 	struct SHEET *sheets[MAX_SHEETS];
 	struct SHEET sheets0[MAX_SHEETS];
 };
-struct SHTCTL *shtctl_init(struct Buddy *buddy, unsigned char *vram, int xsize, int ysize);
+struct SHTCTL *shtctl_init(struct MEMMAN *memman, unsigned char *vram, int xsize, int ysize);
 struct SHEET *sheet_alloc(struct SHTCTL *ctl);
 void sheet_setbuf(struct SHEET *sht, unsigned char *buf, int xsize, int ysize, int col_inv);
 void sheet_updown(struct SHEET *sht, int height);
@@ -215,8 +196,8 @@ int timer_cancel(struct TIMER *timer);
 void timer_cancelall(struct FIFO32 *fifo);
 
 /* mtask.c */
-#define MAX_TASKS		1000	/* �ő��^�X�N�� */
-#define TASK_GDT0		3		/* TSS��GDT�̉��Ԃ��犄�蓖�Ă��̂� */
+#define MAX_TASKS 1000	/*最大任务数量*/
+#define TASK_GDT0 3			/*定义从GDT的几号开始分配给TSS */
 #define MAX_TASKS_LV	100
 #define MAX_TASKLEVELS	10
 struct TSS32 {
@@ -226,8 +207,8 @@ struct TSS32 {
 	int ldtr, iomap;
 };
 struct TASK {
-	int sel, flags; /* sel��GDT�̔ԍ��̂��� */
-	int level, priority;
+	int sel, flags;		/* sel用来存放GDT的编号*/
+	int level, priority; /* 优先级 */
 	struct FIFO32 fifo;
 	struct TSS32 tss;
 	struct SEGMENT_DESCRIPTOR ldt[2];
@@ -239,20 +220,20 @@ struct TASK {
 	unsigned char langmode, langbyte1;
 };
 struct TASKLEVEL {
-	int running; /* ���삵�Ă����^�X�N�̐� */
-	int now; /* ���ݓ��삵�Ă����^�X�N���ǂꂾ���������悤�ɂ��邽�߂̕ϐ� */
+	int running; /*正在运行的任务数量*/
+	int now; /*这个变量用来记录当前正在运行的是哪个任务*/
 	struct TASK *tasks[MAX_TASKS_LV];
 };
 struct TASKCTL {
-	int now_lv; /* ���ݓ��쒆�̃��x�� */
-	char lv_change; /* �����^�X�N�X�C�b�`�̂Ƃ��ɁA���x�����ς����ق����������ǂ��� */
+	int now_lv; /*现在活动中的LEVEL */
+	char lv_change; /*在下次任务切换时是否需要改变LEVEL */
 	struct TASKLEVEL level[MAX_TASKLEVELS];
 	struct TASK tasks0[MAX_TASKS];
 };
 extern struct TASKCTL *taskctl;
 extern struct TIMER *task_timer;
 struct TASK *task_now(void);
-struct TASK *task_init(struct Buddy *buddy);
+struct TASK *task_init(struct MEMMAN *memman);
 struct TASK *task_alloc(void);
 void task_run(struct TASK *task, int level, int priority);
 void task_switch(void);
@@ -276,6 +257,14 @@ struct FILEHANDLE {
 	int size;
 	int pos;
 };
+//////////////////////////////////////////////////////////
+struct FILEINFO {
+	unsigned char name[8], ext[3], type;
+	char reserve[10];
+	unsigned short time, date, clustno;
+	unsigned int size;
+};
+
 void console_task(struct SHEET *sheet, int memtotal);
 void cons_putchar(struct CONSOLE *cons, int chr, char move);
 void cons_newline(struct CONSOLE *cons);
@@ -285,12 +274,37 @@ void cons_runcmd(char *cmdline, struct CONSOLE *cons, int *fat, int memtotal);
 void cmd_mem(struct CONSOLE *cons, int memtotal);
 void cmd_cls(struct CONSOLE *cons);
 void cmd_dir(struct CONSOLE *cons);
+//新建文件夹
+void cmd_mkdir(struct CONSOLE *cons, int *fat, char *cmdline);
+//新建文件
+void cmd_touch(struct CONSOLE *cons, int *fat, char *cmdline);
+//新建并写入文件
+void cmd_vi(struct CONSOLE *cons, int *fat, char *cmdline);
+void cmd_edit(struct CONSOLE *cons, char *cmdline);
+//删除文件
+void cmd_del(struct CONSOLE *cons, int *fat, char *cmdline);
+//递归删除文件夹
+void cmd_rd(struct CONSOLE *cons, int *fat, char *cmdline);
+//跳转到根目录
+void cmd_cdroot();
+//跳转到上级目录
+void cmd_cdparent();
+//跳转目录
+void cmd_cd(struct CONSOLE *cons, int *fat, char *cmdline);
+//修改文件属性
+void cmd_attr(struct CONSOLE *cons, int *fat, char *cmdline);
+//查看文件属性
+void cmd_lsattr(struct CONSOLE *cons);
+//递归列出所有文件
+void cmd_tree(struct CONSOLE *cons, int clustno, int p);
+//打印路径
+char *cmd_path(struct CONSOLE *cons, struct FILEINFO finfo, char *s);
+
+
 void cmd_exit(struct CONSOLE *cons, int *fat);
 void cmd_start(struct CONSOLE *cons, char *cmdline, int memtotal);
 void cmd_ncst(struct CONSOLE *cons, char *cmdline, int memtotal);
 void cmd_langmode(struct CONSOLE *cons, char *cmdline);
-void cmd_alloc(struct CONSOLE *cons, char *cmdline);
-void cmd_free(struct CONSOLE *cons, char *cmdline);
 int cmd_app(struct CONSOLE *cons, int *fat, char *cmdline);
 int *hrb_api(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax);
 int *inthandler0d(int *esp);
@@ -298,16 +312,31 @@ int *inthandler0c(int *esp);
 void hrb_api_linewin(struct SHEET *sht, int x0, int y0, int x1, int y1, int col);
 
 /* file.c */
-struct FILEINFO {
-	unsigned char name[8], ext[3], type;
-	char reserve[10];
-	unsigned short time, date, clustno;
-	unsigned int size;
-};
+// struct FILEINFO {
+// 	unsigned char name[8], ext[3], type;
+// 	char reserve[10];
+// 	unsigned short time, date, clustno;
+// 	unsigned int size;
+// };
 void file_readfat(int *fat, unsigned char *img);
 void file_loadfile(int clustno, int size, char *buf, int *fat, char *img);
 struct FILEINFO *file_search(char *name, struct FILEINFO *finfo, int max);
 char *file_loadfile2(int clustno, int *psize, int *fat);
+///////////////////////////////
+//打开文件返回句柄号
+int file_open(char *name, struct FILEINFO *finfo, int max);
+//内存将文件写入磁盘
+void file_loadimg(char *buf, int clustno, int pos, int size);
+//内存写入文件
+void file_write(int fh, char *buf, int size);
+//删除文件
+int file_del(struct FILEINFO *finfo, int *fat);
+//删除目录
+int dir_del(struct FILEINFO *finfo, int *fat);
+//修改文件属性
+void file_chattr(struct FILEINFO *finfo, char sign, char attr);
+//vi编写文件
+// void file_edit(char *content, struct FILEINFO *file, int clustno, int pos, int size);
 
 /* tek.c */
 int tek_getsize(unsigned char *p);
