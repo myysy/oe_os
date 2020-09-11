@@ -294,7 +294,9 @@ struct FILEHANDLE {
 };
 struct FILEINFO {
     unsigned char name[8], ext[3], type;
-    char reserve[10];
+    // char reserve[10];
+    unsigned int superior_clustno, superior_pos;
+    unsigned short cite;
     unsigned short time, date, clustno;
     unsigned int size;
 };
@@ -315,6 +317,9 @@ void cmd_touch(struct CONSOLE *cons, int *fat, char *cmdline);
 //新建并写入文件
 void cmd_vi(struct CONSOLE *cons, int *fat, char *cmdline);
 void cmd_edit(struct CONSOLE *cons, char *cmdline);
+void cmd_open(struct CONSOLE *cons, char *cmdline);
+void cmd_close(struct CONSOLE *cons, char *cmdline);
+
 //删除文件
 void cmd_del(struct CONSOLE *cons, int *fat, char *cmdline);
 //递归删除文件夹
@@ -333,6 +338,7 @@ void cmd_lsattr(struct CONSOLE *cons);
 void cmd_tree(struct CONSOLE *cons, int clustno, int p);
 //打印路径
 char *cmd_path(struct CONSOLE *cons, struct FILEINFO finfo, char *s);
+
 
 void cmd_exit(struct CONSOLE *cons, int *fat);
 void cmd_start(struct CONSOLE *cons, char *cmdline, int memtotal);
@@ -371,9 +377,7 @@ int file_del(struct FILEINFO *finfo, int *fat);
 int dir_del(struct FILEINFO *finfo, int *fat);
 //修改文件属性
 void file_chattr(struct FILEINFO *finfo, char sign, char attr);
-// vi编写文件
-// void file_edit(char *content, struct FILEINFO *file, int clustno, int pos,
-// int size);
+void file_close(int fh);
 
 /* tek.c */
 int tek_getsize(unsigned char *p);

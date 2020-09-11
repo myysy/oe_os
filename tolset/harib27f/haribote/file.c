@@ -98,9 +98,18 @@ int file_open(char *name, struct FILEINFO *finfo, int max){
 	struct FILEINFO *fileinfo = file_search(name, finfo, max);
 	if (fileinfo != 0)
 	{
-		return fileinfo->clustno;
+		fileinfo->cite += 1;
+		return fileinfo;
+		// return fileinfo->clustno;
 	}
 	return 0;
+}
+
+void file_close(int fh){
+	struct FILEINFO *finfo = fh;
+	if(finfo->cite > 0){
+		finfo->cite -= 1;
+	}
 }
 
 //buf内存写入磁盘

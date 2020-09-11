@@ -23,9 +23,7 @@ void console_task(struct SHEET *sheet, int memtotal)
 	unsigned char *nihongo = (char *) *((int *) 0x0fe8);
 
 	////////////////////////////////////////////////////////////////
-	for (i = 0; i < 4;i++){
-		current_dir->reserve[i] = (current_clustno >> (8 * (3 - i))) & 0xff;
-	}
+	current_dir->superior_clustno = current_clustno;
 	//原文件 -> 系统文件
 	for (i = 0; i < 224 && current_dir[i].name[0] != 0x00;i++){
 		current_dir[i].type += 0x04;
@@ -251,6 +249,10 @@ void cons_runcmd(char *cmdline, struct CONSOLE *cons, int *fat, int memtotal)
 		cmd_vi(cons, fat, cmdline);
 	} else if (vi_flag == 1 && cons->sht != 0) {
 		cmd_edit(cons, cmdline);
+	} else if (strncmp(cmdline, "open ", 5) == 0) {
+		cmd_open(cons, cmdline);
+	} else if (strncmp(cmdline, "close ", 6) == 0) {
+		cmd_close(cons, cmdline);
 	} else if (strncmp(cmdline, "del ", 4) == 0) {
 		cmd_del(cons, fat, cmdline);
 	} else if (strncmp(cmdline, "rd ", 3) == 0) {
@@ -480,9 +482,8 @@ void cmd_mkdir(struct CONSOLE *cons, int *fat, char *cmdline)
 	}
 	else{
 		//前4位父目录所在簇号，后4位父目录所在位置pos(0~15/223)
-		for (i = 0; i < 8;i++){
-			new_dir->reserve[i] = current_dir->reserve[i];
-		}	
+		new_dir->superior_clustno = current_dir->superior_clustno;
+		new_dir->superior_pos = current_dir->superior_pos;
 		//寻找新的空间
 		for (i = 0; i < max_index;i++){
 			if(finfo[i].name[0] == 0xe5 || finfo[i].name[0] == 0x00){
@@ -551,6 +552,7 @@ void cmd_touch(struct CONSOLE *cons, int *fat, char *cmdline)
 	}
 	new_file->type = 0x20;
 	new_file->size = 0;
+	new_file->cite = 0;
 
 	int max_index = 16;
 	if(current_clustno < 0){
@@ -563,9 +565,8 @@ void cmd_touch(struct CONSOLE *cons, int *fat, char *cmdline)
 	}
 	else{	
 		//前4位父目录所在簇号，后4位父目录所在位置pos(0~15/223)
-		for (i = 0; i < 8;i++){
-			new_file->reserve[i] = current_dir->reserve[i];
-		}	
+		new_file->superior_clustno = current_dir->superior_clustno;
+		new_file->superior_pos = current_dir->superior_pos;
 
 		//寻找新的空间
 		for (i = 0; i < max_index;i++){
@@ -642,11 +643,11 @@ void cmd_vi(struct CONSOLE *cons, int *fat, char *cmdline)
 			vi_file->ext[j] = cmdline[i];
 		}	
 		vi_file->type = 0x20;
+		vi_file->cite = 0;
 
 		//前4位父目录所在簇号，后4位父目录所在位置pos(0~15/223)
-		for (i = 0; i < 8;i++){
-			vi_file->reserve[i] = current_dir->reserve[i];
-		}	
+		vi_file->superior_clustno = current_dir->superior_clustno;
+		vi_file->superior_pos = current_dir->superior_pos;
 	
 		for (i = 0; i < max_index;i++){
 			if(finfo[i].name[0] == 0xe5 || finfo[i].name[0] == 0x00){
@@ -713,11 +714,67 @@ void cmd_edit(struct CONSOLE *cons, char *cmdline){
 	if (fh != 0)
 	{
 		file_write(fh, cmdline, edit_file->size);
+		file_close(fh);
 	}
 	vi_flag = 0;
 	//释放申请的内存
 	Buddy_free(buddy, (int )edit_file);
 	return;
+}
+
+void cmd_open(struct CONSOLE *cons, char *cmdline){
+	struct FILEINFO *finfo = current_dir;
+	int i, j;
+
+	for (i = 5; cmdline[i] != 0; i++){
+		if('a' <= cmdline[i] && cmdline[i] <= 'z'){
+			cmdline[i] -= 0x20;
+		}
+	}
+	int max_index = 16;
+	if(current_clustno < 0){
+		max_index = 224;
+	}
+	//寻找文件
+	int fh = file_open(cmdline + 5, finfo, max_index);
+	if(fh == 0){//不存在
+		cons_putstr0(cons, "File does not exist.\n\n");
+	}
+	else{
+		struct FILEINFO *fileinfo = fh;
+		if(fileinfo->cite == 1){
+			cons_putstr0(cons, "File open.\n\n");
+		}
+		else if(fileinfo->cite > 1){
+			cons_putstr0(cons, "File already open.\n\n");
+		}
+	}
+}
+
+void cmd_close(struct CONSOLE *cons, char *cmdline){
+	struct FILEINFO *finfo = current_dir;
+	int i, j;
+
+	for (i = 6; cmdline[i] != 0; i++){
+		if('a' <= cmdline[i] && cmdline[i] <= 'z'){
+			cmdline[i] -= 0x20;
+		}
+	}
+	int max_index = 16;
+	if(current_clustno < 0){
+		max_index = 224;
+	}
+	//寻找文件
+	struct FILEINFO *fh = file_search(cmdline + 6, finfo, max_index);
+	if(fh == 0){//不存在
+		cons_putstr0(cons, "File does not exist.\n\n");
+	}
+	else{
+		file_close((int)fh);
+		if(fh->cite == 0){
+			cons_putstr0(cons, "File close.\n\n");
+		}
+	}
 }
 
 void cmd_del(struct CONSOLE *cons, int *fat, char *cmdline)
@@ -796,8 +853,7 @@ void cmd_cdroot(){
 }
 
 void cmd_cdparent(){
-	current_clustno = (current_dir->reserve[0] << 24) | (current_dir->reserve[1] << 16) | (current_dir->reserve[2] << 8) | current_dir->reserve[3];
-	// int pos = (current_dir->reserve[4] << 24) | (current_dir->reserve[5] << 16) | (current_dir->reserve[7] << 8) | current_dir->reserve[7];
+	current_clustno = current_dir->superior_clustno;
 	current_dir = (struct FILEINFO *)(ADR_DISKIMG + 0x004200 + (current_clustno - 2) * 512);
 }
 
@@ -830,18 +886,14 @@ void cmd_cd(struct CONSOLE *cons, int *fat, char *cmdline)
 	//存在
 	if(is_exsit != 0){
 		current_dir = (struct FILEINFO *) (ADR_DISKIMG + 0x004200 + (is_exsit->clustno - 2) * 512);
-		for (i = 0; i < 4;i++){
-			current_dir->reserve[i] = (current_clustno >> (8 * (3 - i))) & 0xff;
-		}
+		current_dir->superior_clustno = current_clustno;
 		//找到父文件夹位置
 		for (i = 0; i < max_index;i++){
 			if(finfo + i == is_exsit){
 				break;
 			}
 		}
-		for (j = 4; j < 8; j++){
-			current_dir->reserve[j] = (i >> (8 * (7 - j))) & 0xff;
-		}
+		current_dir->superior_pos = i;
 		current_clustno = is_exsit->clustno;		
 	}
 	else{
@@ -994,8 +1046,8 @@ void cmd_tree(struct CONSOLE *cons, int clustno, int p)
 char* cmd_path(struct CONSOLE *cons, struct FILEINFO finfo, char *s)
 {
 	int i, j;
-	int clustno = (finfo.reserve[0] << 24) | (finfo.reserve[1] << 16) | (finfo.reserve[2] << 8) | finfo.reserve[3];
-	int pos = (finfo.reserve[4] << 24) | (finfo.reserve[5] << 16) | (finfo.reserve[6] << 8) | finfo.reserve[7];
+	int clustno = finfo.superior_clustno;
+	int pos = finfo.superior_pos;
 
 	if (clustno < 0 && pos == 0){
 		return "";
