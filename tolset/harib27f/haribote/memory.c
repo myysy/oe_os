@@ -299,3 +299,19 @@ void QSort_size_ds(struct MEMMAN *man, int low, int high) {
         QSort_size_ds(man, i + 1, high);  // 排序k右边
     }
 }
+
+unsigned int memman_alloc_4k(struct MEMMAN *man, unsigned int size)
+{
+	unsigned int a;
+	size = (size + 0xfff) & 0xfffff000;
+	a = memman_alloc(man, size);
+	return a;
+}
+
+int memman_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size)
+{
+	int i;
+	size = (size + 0xfff) & 0xfffff000;
+	i = memman_free(man, addr, size);
+	return i;
+}
