@@ -76,7 +76,8 @@ void putblock8_8(char *vram, int vxsize, int pxsize, int pysize, int px0,
 #define COL8_840084 13
 #define COL8_008484 14
 #define COL8_848484 15
-
+// const int X_SIZE = 500;
+// const int Y_SIZE = 500;
 /* dsctbl.c */
 struct SEGMENT_DESCRIPTOR {
     short limit_low, base_low;
@@ -173,7 +174,8 @@ unsigned int memman_alloc(struct MEMMAN *man, unsigned int size);
 int memman_free(struct MEMMAN *man, unsigned int addr, unsigned int size);
 
 /* sheet.c */
-#define MAX_SHEETS 256
+// #define MAX_SHEETS 256
+#define MAX_SHEETS 500
 struct SHEET {
     unsigned char *buf;
     int bxsize, bysize, vx0, vy0, col_inv, height, flags;

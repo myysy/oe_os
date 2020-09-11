@@ -4,7 +4,8 @@
 #include <stdio.h>
 
 #define KEYCMD_LED		0xed
-
+// const int X_SIZE = 500;
+// const int Y_SIZE = 500;
 void keywin_off(struct SHEET *key_win);
 void keywin_on(struct SHEET *key_win);
 void close_console(struct SHEET *sht);
@@ -390,10 +391,14 @@ struct SHEET *open_console(struct SHTCTL *shtctl, unsigned int memtotal)
 {
 	struct Buddy *buddy = (struct Buddy *) BUDDY_ADDR;
 	struct SHEET *sht = sheet_alloc(shtctl);
-	unsigned char *buf = (unsigned char *) Buddy_alloc_4k(buddy, 256 * 165);
-	sheet_setbuf(sht, buf, 256, 165, -1); /* �����F�Ȃ� */
-	make_window8(buf, 256, 165, "console", 0);
-	make_textbox8(sht, 8, 28, 240, 128, COL8_000000);
+	unsigned char *buf = (unsigned char *) Buddy_alloc_4k(buddy, 600 * 600);
+	// unsigned char *buf = (unsigned char *) Buddy_alloc_4k(buddy, 256 * 165);
+	sheet_setbuf(sht, buf, 570, 570, -1); /* �����F�Ȃ� */
+	// sheet_setbuf(sht, buf, 256, 165, -1); /* �����F�Ȃ� */
+	make_window8(buf, 570, 570, "console", 0);
+	// make_window8(buf, 256, 165, "console", 0);
+	make_textbox8(sht, 8, 28, 570, 570, COL8_000000);
+	// make_textbox8(sht, 8, 28, 240, 128, COL8_000000);
 	sht->task = open_constask(sht, memtotal);
 	sht->flags |= 0x20;	/* �J�[�\������ */
 	return sht;

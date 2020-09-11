@@ -180,3 +180,5 @@ void Buddy_dump(struct Buddy *self) {
     map[self->size] = '\0';
     // puts(map);
 }
+
+

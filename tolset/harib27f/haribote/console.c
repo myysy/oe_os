@@ -3,7 +3,8 @@
 #include "bootpack.h"
 #include <stdio.h>
 #include <string.h>
-
+const int X_SIZE = 500;
+const int Y_SIZE = 500;
 //////////////////////////////////////
 struct FILEINFO *current_dir = (struct FILEINFO *) (ADR_DISKIMG + 0x002600);
 int current_clustno = -12;
@@ -116,7 +117,7 @@ void console_task(struct SHEET *sheet, int memtotal)
 					cons_putchar(&cons, '>', 1);
 				} else {
 					/* ���ʕ��� */
-					if (cons.cur_x < 240) {
+					if (cons.cur_x < X_SIZE) {
 						/* �ꕶ���\�����Ă����A�J�[�\����1�i�߂� */
 						cmdline[cons.cur_x / 8 - 2] = i - 256;
 						cons_putchar(&cons, i - 256, 1);
@@ -127,8 +128,10 @@ void console_task(struct SHEET *sheet, int memtotal)
 			if (cons.sht != 0) {
 				if (cons.cur_c >= 0) {
 					boxfill8(cons.sht->buf, cons.sht->bxsize, cons.cur_c,
-						cons.cur_x, cons.cur_y, cons.cur_x + 7, cons.cur_y + 15);
+						cons.cur_x, cons.cur_y, cons.cur_x + 8, cons.cur_y + 16);
+						// cons.cur_x, cons.cur_y, cons.cur_x + 7, cons.cur_y + 15);
 				}
+				// sheet_refresh(cons.sht, cons.cur_x, cons.cur_y, cons.cur_x + 500, cons.cur_y + 500);
 				sheet_refresh(cons.sht, cons.cur_x, cons.cur_y, cons.cur_x + 8, cons.cur_y + 16);
 			}
 		}
@@ -146,7 +149,7 @@ void cons_putchar(struct CONSOLE *cons, int chr, char move)
 				putfonts8_asc_sht(cons->sht, cons->cur_x, cons->cur_y, COL8_FFFFFF, COL8_000000, " ", 1);
 			}
 			cons->cur_x += 8;
-			if (cons->cur_x == 8 + 240) {
+			if (cons->cur_x == 8 + X_SIZE) {
 				cons_newline(cons);
 			}
 			if (((cons->cur_x - 8) & 0x1f) == 0) {
@@ -164,7 +167,7 @@ void cons_putchar(struct CONSOLE *cons, int chr, char move)
 		if (move != 0) {
 			/* move��0�̂Ƃ��̓J�[�\�����i�߂Ȃ� */
 			cons->cur_x += 8;
-			if (cons->cur_x == 8 + 240) {
+			if (cons->cur_x == 8 + X_SIZE) {
 				cons_newline(cons);
 			}
 		}
@@ -177,22 +180,35 @@ void cons_newline(struct CONSOLE *cons)
 	int x, y;
 	struct SHEET *sheet = cons->sht;
 	struct TASK *task = task_now();
-	if (cons->cur_y < 28 + 112) {
+	// if (cons->cur_y < 28 + 112) {
+	if (cons->cur_y < 28 + Y_SIZE) {
 		cons->cur_y += 16; /* ���̍s�� */
 	} else {
 		/* �X�N���[�� */
 		if (sheet != 0) {
-			for (y = 28; y < 28 + 112; y++) {
-				for (x = 8; x < 8 + 240; x++) {
+			for (y = 28; y < 28 + Y_SIZE; y++) {
+				for (x = 8; x < 8 + X_SIZE; x++) {
 					sheet->buf[x + y * sheet->bxsize] = sheet->buf[x + (y + 16) * sheet->bxsize];
 				}
 			}
-			for (y = 28 + 112; y < 28 + 128; y++) {
-				for (x = 8; x < 8 + 240; x++) {
+			for (y = 28 + 500; y < 28 + Y_SIZE; y++) {
+				for (x = 8; x < 8 + X_SIZE; x++) {
 					sheet->buf[x + y * sheet->bxsize] = COL8_000000;
 				}
 			}
-			sheet_refresh(sheet, 8, 28, 8 + 240, 28 + 128);
+			sheet_refresh(sheet, 8, 28, 8 + 500, 28 + 500);
+
+			// for (y = 28; y < 28 + 112; y++) {
+			// 	for (x = 8; x < 8 + 240; x++) {
+			// 		sheet->buf[x + y * sheet->bxsize] = sheet->buf[x + (y + 16) * sheet->bxsize];
+			// 	}
+			// }
+			// for (y = 28 + 112; y < 28 + 128; y++) {
+			// 	for (x = 8; x < 8 + 240; x++) {
+			// 		sheet->buf[x + y * sheet->bxsize] = COL8_000000;
+			// 	}
+			// }
+			// sheet_refresh(sheet, 8, 28, 8 + 240, 28 + 128);
 		}
 	}
 	cons->cur_x = 8;
@@ -241,7 +257,7 @@ void cons_runcmd(char *cmdline, struct CONSOLE *cons, int *fat, int memtotal)
 		cmd_rd(cons, fat, cmdline);
 	} else if (strcmp(cmdline, "cd") == 0 && cons->sht != 0) {
 		cmd_cdroot();
-	} else if (strcmp(cmdline, "cd .") == 0 && cons->sht != 0) {
+	} else if (strcmp(cmdline, "cd ..") == 0 && cons->sht != 0) {
 		cmd_cdparent();
 	} else if (strncmp(cmdline, "cd ", 3) == 0) {
 		cmd_cd(cons, fat, cmdline);
@@ -318,6 +334,9 @@ void cmd_print_mem(struct CONSOLE *cons, struct MEMMAN *man) {
 
 int get_num(int *idx, char *cmdline) {
 	int tmp = 0, i = *idx;
+	while(cmdline[i] != 0 && cmdline[i] < '0' || cmdline[i] > '9') {
+		i++;
+	}
 	for(; cmdline[i] >= '0' && cmdline[i] <= '9'; i++) {
 		tmp = tmp * 10 + cmdline[i] - '0';
 	}
@@ -341,14 +360,13 @@ void cmd_mem_alloc(struct CONSOLE *cons, struct MEMMAN *man, char *cmdline) {
 }
 
 void cmd_mem_free(struct CONSOLE *cons, struct MEMMAN *man, char *cmdline) {
-	int i = 0, size = 0;
-    for (i = 6; cmdline[i] != 0; i++) {
-        size = size * 10 + cmdline[i] - '0';
-    }
+	int st = 6,addr=0 ,size = 0;
+    addr=get_num(&st,cmdline);
+	size=get_num(&st,cmdline);
     char s[60];
     sprintf(s, "size: %d\n", size);
     cons_putstr0(cons, s);
-    memman_alloc(man, size);
+    memman_free(man,addr, size);
     cmd_print_mem(cons, man);	
 }
 
@@ -365,12 +383,12 @@ void cmd_cls(struct CONSOLE *cons)
 {
 	int x, y;
 	struct SHEET *sheet = cons->sht;
-	for (y = 28; y < 28 + 128; y++) {
-		for (x = 8; x < 8 + 240; x++) {
+	for (y = 28; y < 28 + Y_SIZE; y++) {
+		for (x = 8; x < 8 + X_SIZE; x++) {
 			sheet->buf[x + y * sheet->bxsize] = COL8_000000;
 		}
 	}
-	sheet_refresh(sheet, 8, 28, 8 + 240, 28 + 128);
+	sheet_refresh(sheet, 8, 28, 8 + X_SIZE, 28 + Y_SIZE);
 	cons->cur_y = 28;
 	return;
 }
@@ -496,8 +514,8 @@ void cmd_mkdir(struct CONSOLE *cons, int *fat, char *cmdline)
 		}
 	}	
 	//释放申请的内存
-	// Buddy_free(memman, (int)new_dir, sizeof(struct FILEINFO));
-	Buddy_free(memman, sizeof(struct FILEINFO));
+	Buddy_free(memman, (int)new_dir);
+	// Buddy_free(memman, sizeof(struct FILEINFO));
 	return;
 }
 
@@ -583,7 +601,7 @@ void cmd_touch(struct CONSOLE *cons, int *fat, char *cmdline)
 		}
 	}
 	//释放申请的内存
-	Buddy_free(memman, sizeof(struct FILEINFO));
+	Buddy_free(memman, (int)new_file);
 	return;
 }
 
@@ -671,7 +689,7 @@ void cmd_vi(struct CONSOLE *cons, int *fat, char *cmdline)
 }
 
 void cmd_edit(struct CONSOLE *cons, char *cmdline){
-	struct Buddy *memman = (struct Buddy *) BUDDY_ADDR;
+	struct Buddy *buddy = (struct Buddy *) BUDDY_ADDR;
 	//文件目录项
 	edit_file->size = (unsigned int)strlen(cmdline);
 	file_loadimg((char *)edit_file, current_clustno, vi_pos, 32);
@@ -698,7 +716,7 @@ void cmd_edit(struct CONSOLE *cons, char *cmdline){
 	}
 	vi_flag = 0;
 	//释放申请的内存
-	Buddy_free(memman, sizeof(struct FILEINFO));
+	Buddy_free(buddy, (int )edit_file);
 	return;
 }
 
