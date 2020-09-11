@@ -12,6 +12,79 @@ int vi_flag = 0;
 int vi_pos;
 struct FILEINFO *edit_file;
 
+void counter(struct SHEET *sht_win_b)
+{
+    ////
+    struct TASK *task = task_now();
+    struct Buddy *buddy = (struct Buddy *)BUDDY_ADDR;
+    int i, *fat = (int *) Buddy_alloc_4k(buddy, 128 * 4);
+    struct CONSOLE cons;
+    struct FILEHANDLE fhandle[8];
+    char cmdline[30];
+    unsigned char *nihongo = (char *) *((int *) 0x0fe8);
+
+    cons.sht = sht_win_b;
+    cons.cur_x =  8;
+    cons.cur_y = 28;
+    cons.cur_c = -1;
+    task->cons = &cons;
+    task->cmdline = cmdline;
+
+    if (cons.sht != 0) {
+        cons.timer = timer_alloc();
+        timer_init(cons.timer, &task->fifo, 1);
+        timer_settime(cons.timer, 50);
+    }
+    file_readfat(fat, (unsigned char *) (ADR_DISKIMG + 0x000200));
+    for (i = 0; i < 8; i++) {
+        fhandle[i].buf = 0;
+    }
+    task->fhandle = fhandle;
+    task->fat = fat;
+    if (nihongo[4096] != 0xff) {
+        task->langmode = 1;
+    } else {
+        task->langmode = 0;
+    }
+    task->langbyte1 = 0;
+    ////
+
+//    struct FIFO32 fifo;
+//    struct FIFO32 fifo = task->fifo;
+    struct TIMER *timer_1s;
+//    int  fifobuf[128], count = 0, count0 = 0;
+    int count = 0, count0 = 0;
+    char s[12];
+
+//    fifo32_init(&fifo, 128, fifobuf, 0);
+    timer_1s = timer_alloc();
+    timer_init(timer_1s, &task->fifo, 100);
+    timer_settime(timer_1s, 100);
+
+    for (;;) {
+        count++;
+        io_cli();
+        if (fifo32_status(&task->fifo) == 0) {
+            io_sti();
+        } else {
+            i = fifo32_get(&task->fifo);
+            io_sti();
+            if (i == 100) {
+                sprintf(s, "%11d", count - count0);
+                putfonts8_asc_sht(sht_win_b, 40, 40, COL8_000000, COL8_C6C6C6, s, 11);
+                count0 = count;
+                timer_settime(timer_1s, 100);
+            } else if (i == 4){
+                struct BOOTINFO *binfo = (struct BOOTINFO *) ADR_BOOTINFO;
+                sprintf(s, "%d", i);
+                putfonts8_asc(binfo->vram, binfo->scrnx, 0, 32, COL8_FFFFFF, s);
+                cmd_exit(&cons, fat);
+            }
+
+        }
+    }
+}
+
 void console_task(struct SHEET *sheet, int memtotal)
 {
 	struct TASK *task = task_now();
@@ -299,6 +372,8 @@ void cons_runcmd(char *cmdline, struct CONSOLE *cons, int *fat, int memtotal)
     } else if (strncmp(cmdline, "mfree ", 6) == 0) {
         struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
         cmd_mem_free(cons, memman, cmdline);
+    } else if (strncmp(cmdline, "ctr ", 4) == 0) {
+        cmd_counter(cons, cmdline, memtotal);
     } else if (cmdline[0] != 0) {
 		if (cmd_app(cons, fat, cmdline) == 0) {
 			/* �R�}���h�ł͂Ȃ��A�A�v���ł��Ȃ��A�����ɋ��s�ł��Ȃ� */
@@ -306,6 +381,42 @@ void cons_runcmd(char *cmdline, struct CONSOLE *cons, int *fat, int memtotal)
 		}
 	}
 	return;
+}
+
+
+void cmd_counter(struct CONSOLE *cons, char *cmdline, int memtotal){
+    int i, lv=2, pr=2;
+    char lv_ch, pr_ch;
+    int lv_ready = 0,pr_ready = 0;
+    for (i = 4; cmdline[i] != 0; i++) {
+        if(cmdline[i] == 'l'){
+            lv_ready = 1;
+            continue;
+        }
+        if(cmdline[i] == 'p'){
+            pr_ready = 1;
+            continue;
+        }
+        if(lv_ready == 1){
+            lv_ch = cmdline[i];
+            lv = c2i(lv_ch);
+            lv_ready = 0;
+        }
+        if(pr_ready == 1){
+            pr_ch = cmdline[i];
+            pr = c2i(pr_ch);
+            pr_ready = 0;
+        }
+    }
+    struct SHTCTL *shtctl = (struct SHTCTL *) *((int *) 0x0fe4);
+    struct SHEET *sht = open_counter(shtctl, memtotal,lv, pr);
+    struct FIFO32 *fifo = &sht->task->fifo;
+    sheet_slide(sht, 32, 4);
+    sheet_updown(sht, shtctl->top);
+
+    fifo32_put(fifo, 10 + 256);	/* Enter */
+    cons_newline(cons);
+    return;
 }
 
 // by yepper
@@ -1517,4 +1628,26 @@ void hrb_api_linewin(struct SHEET *sht, int x0, int y0, int x1, int y1, int col)
 	}
 
 	return;
+}
+
+int c2i(char ch){
+    int i;
+    switch (ch) {
+        case '0':
+            i = 0;
+            break;
+        case '1':
+            i = 1;
+            break;
+        case '2':
+            i = 2;
+            break;
+        case '3':
+            i = 3;
+            break;
+        default:
+            i = 2;
+            break;
+    }
+    return  i;
 }

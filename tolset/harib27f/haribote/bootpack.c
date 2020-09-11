@@ -402,10 +402,51 @@ void keywin_on(struct SHEET *key_win) {
     return;
 }
 
+struct SHEET *open_counter(struct SHTCTL *shtctl, unsigned int memtotal, int lv, int pr){
+    struct Buddy *buddy = (struct Buddy *)BUDDY_ADDR;
+    struct SHEET *sht = sheet_alloc(shtctl);
+    unsigned char *buf = (unsigned char *)Buddy_alloc_4k(buddy, 256 * 165);
+    sheet_setbuf(sht, buf, 256, 165, -1); /*无透明色*/
+    char title[80];
+    char level[3];
+    char priority[3];
+    sprintf(level,"%d", lv);
+    sprintf(priority,"%d", pr);
+    strcat(title,"counter-lv_");
+    strcat(title,level);
+    strcat(title,"-pr_");
+    strcat(title,priority);
+    make_window8(buf, 256, 165, title, 0);
+    make_textbox8(sht, 8, 28, 240, 128, COL8_000000);
+    sht->task = open_counter_task(sht, memtotal,lv,pr);
+    sht->flags |= 0x20;
+    return sht;
+}
+
+struct TASK *open_counter_task(struct SHEET *sht, unsigned int memtotal,int lv, int pr){
+    struct Buddy *memman = (struct Buddy *) BUDDY_ADDR;
+    struct TASK *task = task_alloc();
+    int *counter_fifo = (int *) Buddy_alloc_4k(memman, 128 * 4);
+    task->cons_stack = Buddy_alloc_4k(memman, 64 * 1024);
+    task->tss.esp = task->cons_stack + 64 * 1024 - 12;
+    task->tss.eip = (int) &counter;
+    task->tss.es = 1 * 8;
+    task->tss.cs = 2 * 8;
+    task->tss.ss = 1 * 8;
+    task->tss.ds = 1 * 8;
+    task->tss.fs = 1 * 8;
+    task->tss.gs = 1 * 8;
+    *((int *) (task->tss.esp + 4)) = (int) sht;
+    *((int *) (task->tss.esp + 8)) = memtotal;
+    task_run(task, lv, pr); /* default: level=2, priority=2 */
+    fifo32_init(&task->fifo, 128, counter_fifo, task);
+    return task;
+}
+
 struct TASK *open_constask(struct SHEET *sht, unsigned int memtotal) {
     struct Buddy *buddy = (struct Buddy *)BUDDY_ADDR;
     struct TASK *task = task_alloc();
-    int *cons_fifo = (int *)Buddy_alloc_4k(buddy, 128 * 4);
+    int *cons_fifo = (int *) Buddy_alloc_4k(buddy, 128 * 4);
     task->cons_stack = Buddy_alloc_4k(buddy, 64 * 1024);
     task->tss.esp = task->cons_stack + 64 * 1024 - 12;
     task->tss.eip = (int)&console_task;

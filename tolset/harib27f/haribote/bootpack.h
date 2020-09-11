@@ -178,6 +178,7 @@ void QSort_size_as(struct MEMMAN *man, int low, int high);
 void QSort_size_ds(struct MEMMAN *man, int low, int high);
 void merge(struct MEMMAN *man);
 void to_merge(struct MEMMAN *man) ;
+unsigned int memman_alloc_4k(struct MEMMAN *man, unsigned int size);
 
 /* sheet.c */
 // #define MAX_SHEETS 256
@@ -300,7 +301,7 @@ struct FILEINFO {
     unsigned short time, date, clustno;
     unsigned int size;
 };
-
+void counter(struct SHEET *sht_win_b);;
 void console_task(struct SHEET *sheet, int memtotal);
 void cons_putchar(struct CONSOLE *cons, int chr, char move);
 void cons_newline(struct CONSOLE *cons);
@@ -338,7 +339,8 @@ void cmd_lsattr(struct CONSOLE *cons);
 void cmd_tree(struct CONSOLE *cons, int clustno, int p);
 //打印路径
 char *cmd_path(struct CONSOLE *cons, struct FILEINFO finfo, char *s);
-
+void cmd_counter(struct CONSOLE *cons, char *cmdline, int memtotal);
+int c2i(char ch);
 
 void cmd_exit(struct CONSOLE *cons, int *fat);
 void cmd_start(struct CONSOLE *cons, char *cmdline, int memtotal);
@@ -386,3 +388,5 @@ int tek_decomp(unsigned char *p, char *q, int size);
 /* bootpack.c */
 struct TASK *open_constask(struct SHEET *sht, unsigned int memtotal);
 struct SHEET *open_console(struct SHTCTL *shtctl, unsigned int memtotal);
+unsigned int memman_alloc_4k(struct MEMMAN *man, unsigned int size);
+struct TASK *open_counter_task(struct SHEET *sht, unsigned int memtotal,int lv, int pr);
