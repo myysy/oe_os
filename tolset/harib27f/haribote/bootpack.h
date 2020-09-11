@@ -1,4 +1,5 @@
 /* asmhead.nas */
+#define TYPE 3
 struct BOOTINFO { /* 0x0ff0-0x0fff */
     char cyls; /* �u�[�g�Z�N�^�͂ǂ��܂Ńf�B�X�N���ǂ񂾂̂�
                 */
@@ -172,6 +173,11 @@ void memman_init(struct MEMMAN *man);
 unsigned int memman_total(struct MEMMAN *man);
 unsigned int memman_alloc(struct MEMMAN *man, unsigned int size);
 int memman_free(struct MEMMAN *man, unsigned int addr, unsigned int size);
+void QSort_addr(struct MEMMAN *man, int low, int high);
+void QSort_size_as(struct MEMMAN *man, int low, int high);
+void QSort_size_ds(struct MEMMAN *man, int low, int high);
+void merge(struct MEMMAN *man);
+void to_merge(struct MEMMAN *man) ;
 
 /* sheet.c */
 // #define MAX_SHEETS 256
