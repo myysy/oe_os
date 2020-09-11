@@ -115,43 +115,43 @@ int memman_free(struct MEMMAN *man, unsigned int addr, unsigned int size) {
 #endif
     }
 
-    // if (i > 0) {
-    //     if (man->free[i - 1].addr + man->free[i - 1].size == addr) {
-    //         man->free[i - 1].size += size;
-    //         if (i < man->frees) {
-    //             if (addr + size == man->free[i].addr) {
-    //                 man->free[i - 1].size += man->free[i].size;
-    //                 man->frees--;
-    //                 for (; i < man->frees; i++) {
-    //                     man->free[i] = man->free[i + 1];
-    //                 }
-    //             }
-    //         }
-    //         to_merge(man);
-    //         return 0;
-    //     }
-    // }
-    // if (i < man->frees) {
-    //     if (addr + size == man->free[i].addr) {
-    //         man->free[i].addr = addr;
-    //         man->free[i].size += size;
-    //         to_merge(man);
-    //         return 0;
-    //     }
-    // }
-    // if (man->frees < MEMMAN_FREES) {
-    //     for (j = man->frees; j > i; j--) {
-    //         man->free[j] = man->free[j - 1];
-    //     }
-    //     man->frees++;
-    //     if (man->maxfrees < man->frees) {
-    //         man->maxfrees = man->frees;
-    //     }
-    //     man->free[i].addr = addr;
-    //     man->free[i].size = size;
-    //     to_merge(man);
-    //     return 0;
-    // }
+#if TYPE == 1
+    if (i > 0) {
+        if (man->free[i - 1].addr + man->free[i - 1].size == addr) {
+            man->free[i - 1].size += size;
+            if (i < man->frees) {
+                if (addr + size == man->free[i].addr) {
+                    man->free[i - 1].size += man->free[i].size;
+                    man->frees--;
+                    for (; i < man->frees; i++) {
+                        man->free[i] = man->free[i + 1];
+                    }
+                }
+            }
+            return 0;
+        }
+    }
+    if (i < man->frees) {
+        if (addr + size == man->free[i].addr) {
+            man->free[i].addr = addr;
+            man->free[i].size += size;
+            return 0;
+        }
+    }
+    if (man->frees < MEMMAN_FREES) {
+        for (j = man->frees; j > i; j--) {
+            man->free[j] = man->free[j - 1];
+        }
+        man->frees++;
+        if (man->maxfrees < man->frees) {
+            man->maxfrees = man->frees;
+        }
+        man->free[i].addr = addr;
+        man->free[i].size = size;
+        return 0;
+    }
+#endif
+
     if (man->frees < MEMMAN_FREES) {
         for (j = man->frees; j > i; j--) {
             man->free[j] = man->free[j - 1];
@@ -300,9 +300,7 @@ void QSort_size_ds(struct MEMMAN *man, int low, int high) {
     }
 }
 
-
-unsigned int memman_alloc_4k(struct MEMMAN *man, unsigned int size)
-{
+unsigned int memman_alloc_4k(struct MEMMAN *man, unsigned int size) {
     unsigned int a;
     size = (size + 0xfff) & 0xfffff000;
     a = memman_alloc(man, size);

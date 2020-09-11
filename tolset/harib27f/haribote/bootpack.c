@@ -77,7 +77,7 @@ void HariMain(void) {
     memtotal = memtest(0x00500000, 0xbfffffff);
     memman_init(memman);
     memman_free(memman, 0x00001000, 0x0009e000); /* 0x00001000 - 0x0009efff */
-#if TYPE == 3
+#if TYPE < 3
     memman_free(memman, 0x00500000, memtotal - 0x00500000);
 #endif
 
