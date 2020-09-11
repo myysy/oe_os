@@ -270,13 +270,86 @@ void cons_runcmd(char *cmdline, struct CONSOLE *cons, int *fat, int memtotal)
 		cmd_ncst(cons, cmdline, memtotal);
 	} else if (strncmp(cmdline, "langmode ", 9) == 0) {
 		cmd_langmode(cons, cmdline);
-	} else if (cmdline[0] != 0) {
+	} else if (strncmp(cmdline, "pmem", 4) == 0) {
+        struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
+        cmd_print_mem(cons, memman);
+    } else if (strncmp(cmdline, "pbud", 4) == 0) {
+        cmd_print_buddy(cons);
+    } else if (strncmp(cmdline, "malloc ", 7) == 0) {
+        struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
+        cmd_mem_alloc(cons, memman, cmdline);
+    } else if (strncmp(cmdline, "mfree ", 6) == 0) {
+        struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
+        cmd_mem_free(cons, memman, cmdline);
+    } else if (cmdline[0] != 0) {
 		if (cmd_app(cons, fat, cmdline) == 0) {
 			/* �R�}���h�ł͂Ȃ��A�A�v���ł��Ȃ��A�����ɋ��s�ł��Ȃ� */
 			cons_putstr0(cons, "Bad command.\n\n");
 		}
 	}
 	return;
+}
+
+// by yepper
+void cmd_print_buddy(struct CONSOLE *cons) {
+    struct Buddy *buddy = (struct Buddy *)BUDDY_ADDR;
+    char s[60];
+    sprintf(s, "buddy details: \n");
+    cons_putstr0(cons, s);
+    int i = 0;
+    for (; i < 2 * buddy->size - 1; i++) {
+        sprintf(s, "buddy[%d]: %d\n", i, buddy->longest[i]);
+        cons_putstr0(cons, s);
+    }
+}
+
+// by yepper
+void cmd_print_mem(struct CONSOLE *cons, struct MEMMAN *man) {
+    char s[60];
+    sprintf(s, "memman details: \n");
+    cons_putstr0(cons, s);
+    int i = 0;
+    for (; i < man->frees; i++) {
+        sprintf(s, "%d addr: %d size: %d\n", i, man->free[i].addr,
+                man->free[i].size);
+        cons_putstr0(cons, s);
+    }
+}
+
+int get_num(int *idx, char *cmdline) {
+	int tmp = 0, i = *idx;
+	for(; cmdline[i] >= '0' && cmdline[i] <= '9'; i++) {
+		tmp = tmp * 10 + cmdline[i] - '0';
+	}
+	*idx = i;
+	return tmp;
+}
+
+// by myq
+void cmd_mem_alloc(struct CONSOLE *cons, struct MEMMAN *man, char *cmdline) {
+    // int i = 0, size = 0;
+    // for (i = 6; cmdline[i] != 0; i++) {
+    //     size = size * 10 + cmdline[i] - '0';
+    // }
+	int st = 7;
+	int size = get_num(&st, cmdline);
+    char s[60];
+    sprintf(s, "size: %d\n", size);
+    cons_putstr0(cons, s);
+    memman_alloc(man, size);
+    cmd_print_mem(cons, man);
+}
+
+void cmd_mem_free(struct CONSOLE *cons, struct MEMMAN *man, char *cmdline) {
+	int i = 0, size = 0;
+    for (i = 6; cmdline[i] != 0; i++) {
+        size = size * 10 + cmdline[i] - '0';
+    }
+    char s[60];
+    sprintf(s, "size: %d\n", size);
+    cons_putstr0(cons, s);
+    memman_alloc(man, size);
+    cmd_print_mem(cons, man);	
 }
 
 void cmd_mem(struct CONSOLE *cons, int memtotal)
